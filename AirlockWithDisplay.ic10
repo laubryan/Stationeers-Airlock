@@ -1,0 +1,128 @@
+#
+# Airlock Control Program (with pressure display)
+#
+alias GasSensor d0
+alias InteriorVent d1
+alias ExteriorVent d2
+alias InteriorHatch d3
+alias ExteriorHatch d4
+alias PressureDisplay d5
+
+# Pressure targets
+define InteriorPressureTarget 90
+define ExteriorPressureTarget 0
+
+# Variables
+alias CurrentState r2
+# States
+define CycledToOutside 0
+define CycledToInside 1
+define CyclingToOutside1 2
+define CyclingToOutside2 3
+define CyclingToInside1 4
+define CyclingToInside2 5
+
+main:
+# Initialize
+s InteriorHatch Mode 0
+s InteriorHatch Lock 1
+s ExteriorHatch Mode 0
+s ExteriorHatch Lock 1
+s InteriorVent Lock 0
+s ExteriorVent Lock 0
+s InteriorVent On 0
+s ExteriorVent On 0
+# Determine initial state based on outer hatch
+l r0 ExteriorHatch Open
+beqz r0 INITOUTERCLOSED # Outer hatch is closed
+j INITOUTEROPEN # Our hatch is open
+
+LOOP:
+# Process running states first
+s db Setting CurrentState
+l r0 GasSensor Pressure
+round r0 r0
+s PressureDisplay Setting r0
+beq CurrentState CyclingToOutside1 CYCLINGTOOUTSIDE1
+beq CurrentState CyclingToOutside2 CYCLINGTOOUTSIDE2
+beq CurrentState CyclingToInside1 CYCLINGTOINSIDE1
+beq CurrentState CyclingToInside2 CYCLINGTOINSIDE2
+# Handle airlock cycle buttons
+lb r0 491845673 Setting 3
+beqz r0 LOOP
+beq CurrentState CycledToOutside CYCLETOINSIDE
+beq CurrentState CycledToInside CYCLETOOUTSIDE
+j LOOP
+
+# Initialize, outer hatch is closed
+INITOUTERCLOSED:
+s ExteriorHatch Open 0
+s InteriorHatch Open 1
+move CurrentState CycledToInside
+j LOOP
+
+# Initialize, outer hatch is open
+INITOUTEROPEN:
+s ExteriorHatch Open 1
+s InteriorHatch Open 0
+move CurrentState CycledToOutside
+j LOOP
+
+# Cycle to inside
+CYCLETOINSIDE:
+move CurrentState CyclingToInside1
+s ExteriorHatch Open 0
+yield
+s ExteriorVent Mode 1 # Pump out airlock
+s ExteriorVent On 1
+yield
+j LOOP
+
+# Cycling to inside phase 1
+CYCLINGTOINSIDE1:
+l r0 GasSensor Pressure
+bgtz r0 LOOP
+s ExteriorVent On 0 # Shut off vent
+yield
+move CurrentState CyclingToInside2
+s InteriorVent Mode 0 # Pressurize airlock
+s InteriorVent On 1
+j LOOP
+
+# Cycling to inside phase 2
+CYCLINGTOINSIDE2:
+l r0 GasSensor Pressure
+blt r0 InteriorPressureTarget LOOP
+s InteriorVent On 0 # Shut off vent
+s InteriorHatch Open 1
+move CurrentState CycledToInside
+j LOOP
+
+# Cycle to outside
+CYCLETOOUTSIDE:
+move CurrentState CyclingToOutside1
+s InteriorHatch Open 0 # Close interior hatch
+yield
+s InteriorVent Mode 1 # Pump out airlock
+s InteriorVent On 1
+j LOOP
+
+# Cycling to outside phase 1, depressurize airlock
+CYCLINGTOOUTSIDE1:
+l r0 GasSensor Pressure
+bgtz r0 LOOP
+s InteriorVent On 0 # Shut off vent
+yield
+move CurrentState CyclingToOutside2
+s ExteriorVent Mode 0 # Start pressurizing w/outside atmo
+s ExteriorVent On 1
+j LOOP
+
+# Cycling to outside phase 2, pressurize w/outside atmo
+CYCLINGTOOUTSIDE2:
+l r0 GasSensor Pressure
+blt r0 ExteriorPressureTarget LOOP
+s ExteriorVent On 0
+s ExteriorHatch Open 1
+move CurrentState CycledToOutside
+j LOOP
