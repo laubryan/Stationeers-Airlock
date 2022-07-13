@@ -81,8 +81,8 @@ In this context "Idle" is when the airlock isn't actively cycling between states
 | 3 | Gas Sensor | 1 | 1 |
 | 4 | Interior Vent | 0 | 100 |
 | 5 | Exterior Vent | 0 | 100 |
-| 6 | Outer Airlock Hatch | 25 | 0 |
-| 7 | Inner Airlock Hatch | 25 | 0 |
+| 6 | Outer Airlock Hatch | 25 | 25 |
+| 7 | Inner Airlock Hatch | 25 | 25 |
 | 8 | Airlock cycle button(s) | 0 | 0 |
 | 9 | Pressure Dsiplay | 50 | 50 |
 
