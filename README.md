@@ -75,7 +75,7 @@ Note that it is naturally slower when pressurizing the airlock directly from an 
 In this context "Idle" is when the airlock isn't actively cycling between states. Some components are switched off by the script when idle, so idle consumption is listed as zero for those.
 
 | | Part | Idle (W) | Cycling (W) |
-|---|:---|:---|:---|:---|
+|---|:---|:---|:---|
 | 1 | Integrated Circuit | 0 | 0 |
 | 2 | IC Housing | 50 | 50 |
 | 3 | Gas Sensor | 1 | 1 |
