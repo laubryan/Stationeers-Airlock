@@ -6,7 +6,7 @@ This is a MIPS assembly script to mimic the functionality of an Advanced Airlock
 The script will ensure that the airlock is always fully depressurized before pressurizing, to ensure that the external atmosphere doesn't contaminate the base's atmosphere.
 
 ## Parts Required
-You need to build an airlock (a 1x1 grid room) that has the following parts, networked together (and powered of course):
+You need to build an airlock (e.g. a 1x1 grid room) that has the following parts, networked together (and powered of course):
 
 | | Part | Stationeers Component | Sub Type | Purpose |
 |---|:---|:---|:---|:---|
@@ -34,10 +34,17 @@ The Interior Vent can be piped to the base's interior or a breathable gas tank f
 ## Operation
 The script mimics the functionality of the in-game Advanced Airlock, but without the annoyingly long pause between depressurization and pressurization. Its speed is limited only by the pressure supplied by the Active Vents.
 
-It can be made to operate even faster in one of the following ways:
+There are two definitions that can be changed in the script:
+
+- `InteriorPressureTarget`
+- `ExteriorPressureTarget`
+
+These are the pressure targets in kPa that the airlock will try to reach when pressurizing each phase. Much like the original Airlock, the script will stall if it is unable to reach the target pressures for any reason. If you're worried about being locked out, you can change the Lock settings in the Initialization section of the script to allow you to manually override the hatches and vents.
+
+The airlock can be made to operate even faster in one of the following ways:
 
 - Setting the `ExteriorPressureTarget` definition to 0 in the script, although this means that you will experience sudden pressure changes when the outer hatch is opened.
-- Connecting pressurization tanks instead of simply pulling in base or external atmosphere.
+- Connecting pressurization tanks instead of simply pulling in base or external atmosphere directly.
 
-## Liability
-This program works for me, but you use it at your own risk. If you do use it, you agree that I'm not responsible if a misconfiguration launches your airlock into orbit, or creates a smoking crater where your base used to be, or some other calamity. If you're playing Stationeers that's just a normal day anyway.
+## Disclaimer
+This program works great for me, but you use it at your own risk. If you do use it, you agree that I'm not responsible if a misconfiguration launches your airlock into orbit, or creates a smoking crater where your base used to be, or some other calamity. If you're playing Stationeers that's just a normal day anyway.
