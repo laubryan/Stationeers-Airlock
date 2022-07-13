@@ -70,6 +70,22 @@ The airlock can be made to operate even faster in one of the following ways:
 
 Note that it is naturally slower when pressurizing the airlock directly from an external atmosphere that has a relatively low pressure. If the pressure differential is small (e.g. Mars) then it might be best to just set the `ExteriorPressureTarget` to zero since the inrush of atmosphere when the outer hatch opens is negligible in those cases.
 
+## Power Consumption
+
+In this context "Idle" is when the airlock isn't actively cycling between states. Some components are switched off by the script when idle, so idle consumption is listed as zero for those.
+
+| | Part | Idle (W) | Cycling (W) |
+|---|:---|:---|:---|:---|
+| 1 | Integrated Circuit | 0 | 0 |
+| 2 | IC Housing | 50 | 50 |
+| 3 | Gas Sensor | 1 | 1 |
+| 4 | Interior Vent | 0 | 100 |
+| 5 | Exterior Vent | 0 | 100 |
+| 6 | Outer Airlock Hatch | 25 | 0 |
+| 7 | Inner Airlock Hatch | 25 | 0 |
+| 8 | Airlock cycle button(s) | 0 | 0 |
+| 9 | Pressure Dsiplay | 50 | 50 |
+
 ## Disclaimer
 
 This program works great for me, but you use it at your own risk. If you do use it, you agree that I'm not responsible if a misconfiguration launches your airlock into orbit, or creates a smoking crater where your base used to be, or some other calamity. If you're playing Stationeers that's just a normal day anyway.
