@@ -68,7 +68,7 @@ The airlock can be made to operate even faster in one of the following ways:
 - Setting the `ExteriorPressureTarget` definition to 0 in the script, although this means that you will experience sudden pressure changes when the outer hatch is opened.
 - Connecting pressurization tanks instead of simply pulling in base or external atmosphere directly.
 
-Note that it is naturally slower when pressurizing the airlock directly from an external atmosphere that has a relatively low pressure. If the pressure differential is small (e.g. Mars) then it might be best to just set the `ExteriorPRssureTarget` to zero since the inrush of atmosphere when the outer hatch opens is negligible in those cases.
+Note that it is naturally slower when pressurizing the airlock directly from an external atmosphere that has a relatively low pressure. If the pressure differential is small (e.g. Mars) then it might be best to just set the `ExteriorPressureTarget` to zero since the inrush of atmosphere when the outer hatch opens is negligible in those cases.
 
 ## Disclaimer
 
